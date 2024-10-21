@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    container_name: myClinic_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - clinicData:/var/lib/mysql
+
+volumes:
+  clinicData:
