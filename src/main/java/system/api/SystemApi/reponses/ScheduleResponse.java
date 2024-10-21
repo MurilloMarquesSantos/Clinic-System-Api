@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ScheduleResponse {
+
     private String doctorName;
     private String dateTime;
 }

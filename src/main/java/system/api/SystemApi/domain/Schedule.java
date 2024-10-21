@@ -1,6 +1,5 @@
 package system.api.SystemApi.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Schedules {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +27,7 @@ public class Schedules {
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     @JsonIgnore
-    private Doctors doctor;
+    private Doctor doctor;
 
     @Enumerated(EnumType.STRING)
     private AvailabilityStatus available;

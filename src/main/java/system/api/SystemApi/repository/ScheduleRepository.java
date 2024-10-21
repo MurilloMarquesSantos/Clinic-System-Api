@@ -1,7 +1,7 @@
 package system.api.SystemApi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import system.api.SystemApi.domain.Schedules;
+import system.api.SystemApi.domain.Schedule;
 
-public interface ScheduleRepository extends JpaRepository<Schedules, Long> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 }
