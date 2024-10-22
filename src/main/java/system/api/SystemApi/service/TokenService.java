@@ -1,23 +1,26 @@
 package system.api.SystemApi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 import system.api.SystemApi.domain.Roles;
 import system.api.SystemApi.domain.User;
+import system.api.SystemApi.reponses.LoginResponse;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class TokenService {
 
     private final JwtEncoder jwtEncoder;
 
-    public String generateToken(User user) {
+    public LoginResponse generateToken(User user) {
 
         Instant now = Instant.now();
         long expiresIn = 300L;
@@ -35,6 +38,10 @@ public class TokenService {
                 .claim("scope", scope)
                 .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+        String token = jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+
+        return LoginResponse.builder().accessToken(token).expiresIn(expiresIn).build();
+
+
     }
 }

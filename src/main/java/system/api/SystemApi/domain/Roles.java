@@ -27,4 +27,5 @@ public class Roles implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
+
 }
