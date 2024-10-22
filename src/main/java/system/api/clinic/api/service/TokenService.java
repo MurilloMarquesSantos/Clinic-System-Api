@@ -38,6 +38,7 @@ public class TokenService {
                 .claim("scope", scope)
                 .build();
 
+        log.info(claimsSet.getClaims());
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
 
         return LoginResponse.builder().accessToken(token).expiresIn(expiresIn).build();

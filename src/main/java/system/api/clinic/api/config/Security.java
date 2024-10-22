@@ -34,9 +34,21 @@ public class Security {
     @Value("${jwt.private.key}")
     private RSAPrivateKey privateKey;
 
+    private final String[] ADMIN_ENDPOINTS = {
+            "/register-user",
+            "/register-admin",
+            "/register-doctor"
+    };
+
+    private final String[] USER_ENDPOINTS = {
+            "/v1/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
+                        .requestMatchers(USER_ENDPOINTS).hasRole("USER")
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2

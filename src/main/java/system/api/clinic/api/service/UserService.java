@@ -9,10 +9,12 @@ import system.api.clinic.api.config.InitialConfig;
 import system.api.clinic.api.domain.Doctor;
 import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.User;
+import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
 import system.api.clinic.api.repository.DoctorRepository;
 import system.api.clinic.api.repository.UserRepository;
+import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 
@@ -35,7 +37,7 @@ public class UserService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Collections.singleton(rolesService.getRoleByName("ROLE_USER")))
+                .roles(Collections.singleton(rolesService.getRoleByName("USER")))
                 .build();
         userRepository.save(user);
 
@@ -51,7 +53,7 @@ public class UserService {
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Collections.singleton(rolesService.getRoleByName("ROLE_DOCTOR")))
+                .roles(Collections.singleton(rolesService.getRoleByName("DOCTOR")))
                 .build();
         userRepository.save(user);
 
@@ -73,6 +75,23 @@ public class UserService {
                 .email(doctor.getEmail())
                 .password(request.getPassword())
                 .build();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public NewAdminResponse createNewAdmin(NewAdminRequest request) throws BadRequestException {
+        User user = User.builder()
+                .name(request.getName())
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(Collections.singleton(rolesService.getRoleByName("ADMIN")))
+                .build();
+        userRepository.save(user);
+
+        return NewAdminResponse.builder()
+                .name(request.getName()).email(request.getEmail()).password(request.getPassword())
+                .role("ADMIN").build();
+
     }
 
 }
