@@ -13,5 +13,6 @@ public class ScheduleResponse {
 
     private Long scheduleId;
     private String doctorName;
+    private String specialty;
     private String dateTime;
 }
