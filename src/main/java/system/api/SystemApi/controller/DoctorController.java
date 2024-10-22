@@ -2,6 +2,8 @@ package system.api.SystemApi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,9 @@ public class DoctorController {
     private final DoctorsService doctorsService;
 
     @GetMapping("/{name}")
-    public ResponseEntity<List<ScheduleResponse>> schedule(@PathVariable String name) throws BadRequestException {
-        return new ResponseEntity<>(doctorsService.listSchedules(name), HttpStatus.OK);
+    public ResponseEntity<Page<ScheduleResponse>> schedule(
+            @PathVariable String name, Pageable pageable) throws BadRequestException {
+        return new ResponseEntity<>(doctorsService.listSchedules(name, pageable), HttpStatus.OK);
     }
 
 
