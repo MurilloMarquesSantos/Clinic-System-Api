@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import system.api.SystemApi.reponses.ScheduleResponse;
 import system.api.SystemApi.service.DoctorsService;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class DoctorController {
