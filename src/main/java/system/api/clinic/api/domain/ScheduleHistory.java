@@ -27,5 +27,4 @@ public class ScheduleHistory {
 
     private LocalDateTime scheduleDate;
 
-    private String status;
 }
