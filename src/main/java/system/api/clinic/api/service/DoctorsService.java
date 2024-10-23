@@ -35,7 +35,7 @@ public class DoctorsService {
         return new PageImpl<>(docs, pageable, doctorRepository.count());
     }
 
-    public Page<ScheduleResponse> listSchedules(String name, Pageable pageable) throws BadRequestException {
+    public Page<ScheduleResponse> listSchedulesPage(String name, Pageable pageable) throws BadRequestException {
         List<Doctor> doctorsList = findDoctorsOrThrowBadRequestException(name);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
@@ -62,6 +62,29 @@ public class DoctorsService {
 
 
         return new PageImpl<>(paginatedList, pageable, allSchedules.size());
+    }
+
+    public List<ScheduleResponse> listSchedules(String name) throws BadRequestException {
+        List<Doctor> doctorsList = findDoctorsOrThrowBadRequestException(name);
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
+
+        List<ScheduleResponse> allSchedules = new ArrayList<>();
+
+        for (Doctor doctor : doctorsList) {
+            List<ScheduleResponse> list = doctor.getSchedule().stream()
+                    .filter(s -> s.getAvailable().equals(AvailabilityStatus.AVAILABLE))
+                    .map(schedules -> ScheduleResponse.builder()
+                            .scheduleId(schedules.getId())
+                            .doctorName(name)
+                            .specialty(doctor.getSpecialty())
+                            .dateTime(schedules.getDateTime().format(dateFormatter))
+                            .build())
+                    .toList();
+
+            allSchedules.addAll(list);
+        }
+        return allSchedules;
     }
 
     public Page<FindDoctorsResponse> listBySpecialty(String specialty, Pageable pageable) {
