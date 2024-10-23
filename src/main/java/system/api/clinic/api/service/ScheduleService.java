@@ -1,30 +1,39 @@
 package system.api.clinic.api.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import system.api.clinic.api.domain.Schedule;
+import system.api.clinic.api.domain.User;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;
-import system.api.clinic.api.reponses.ScheduleResponse;
+import system.api.clinic.api.repository.ScheduleHistoryRepository;
 import system.api.clinic.api.repository.ScheduleRepository;
+import system.api.clinic.api.repository.UserRepository;
 
-import java.util.List;
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ScheduleService {
 
-    private final DoctorsService doctorsService;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleHistoryRepository historyRepository;
+    private final UserRepository userRepository;
 
-    public String doSchedule(String name, long id) throws BadRequestException {
-        List<ScheduleResponse> schedules = doctorsService.listSchedules(name);
-        for (ScheduleResponse s : schedules) {
-            if (s.getScheduleId() == id) {
-                replaceScheduleStatus(id);
-                return "Schedule done!";
-            }
+    public String doSchedule(String name, long id, Principal principal) throws BadRequestException {
+        String userId = principal.getName();
+        Optional<User> user = userRepository.findById(Long.valueOf(userId));
+        log.info(user.get());
+        log.info("NAME: {}", principal.getName());
+
+        Optional<Schedule> schedule = scheduleRepository.findByIdAndDoctorName(id, name);
+        if (schedule.isPresent()) {
+            replaceScheduleStatus(id);
+            return "Schedule done!";
         }
         throw new BadRequestException("This schedule is not in this Doctor's schedule");
     }

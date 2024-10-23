@@ -18,3 +18,5 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+      springframework:
+        security : DEBUG

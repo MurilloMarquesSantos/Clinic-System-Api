@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class TokenService {
 
     private final JwtEncoder jwtEncoder;
-
     public LoginResponse generateToken(User user) {
 
         Instant now = Instant.now();
@@ -39,10 +38,11 @@ public class TokenService {
                 .build();
 
         log.info(claimsSet.getClaims());
+
+        log.info(claimsSet.getSubject());
+
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
 
         return LoginResponse.builder().accessToken(token).expiresIn(expiresIn).build();
-
-
     }
 }
