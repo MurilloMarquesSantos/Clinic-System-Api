@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import system.api.clinic.api.reponses.FindDoctorsResponse;
 import system.api.clinic.api.reponses.ScheduleResponse;
 import system.api.clinic.api.service.DoctorsService;
 
@@ -20,7 +21,12 @@ public class DoctorController {
 
     private final DoctorsService doctorsService;
 
-    @GetMapping("/{name}")
+    @GetMapping("/doctors")
+    public ResponseEntity<Page<FindDoctorsResponse>> listAll(Pageable pageable) {
+        return new ResponseEntity<>(doctorsService.listAll(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/doctors/{name}")
     public ResponseEntity<Page<ScheduleResponse>> schedule(
             @PathVariable String name, Pageable pageable) throws BadRequestException {
         return new ResponseEntity<>(doctorsService.listSchedules(name, pageable), HttpStatus.OK);

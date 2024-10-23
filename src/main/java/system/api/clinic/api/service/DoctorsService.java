@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import system.api.clinic.api.domain.Doctor;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;
+import system.api.clinic.api.reponses.FindDoctorsResponse;
 import system.api.clinic.api.reponses.ScheduleResponse;
 import system.api.clinic.api.repository.DoctorRepository;
 
@@ -20,6 +21,19 @@ import java.util.List;
 public class DoctorsService {
 
     private final DoctorRepository doctorRepository;
+
+    public Page<FindDoctorsResponse> listAll(Pageable pageable) {
+        List<Doctor> doctors = doctorRepository.findAll(pageable).toList();
+        List<FindDoctorsResponse> docs = new ArrayList<>();
+        for (Doctor doc : doctors) {
+            FindDoctorsResponse build = FindDoctorsResponse.builder()
+                    .name(doc.getName())
+                    .specialty(doc.getSpecialty())
+                    .build();
+            docs.add(build);
+        }
+        return new PageImpl<>(docs, pageable, doctorRepository.count());
+    }
 
     public Page<ScheduleResponse> listSchedules(String name, Pageable pageable) throws BadRequestException {
         List<Doctor> doctorsList = findDoctorsOrThrowBadRequestException(name);
