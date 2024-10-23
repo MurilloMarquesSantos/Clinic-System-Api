@@ -2,24 +2,32 @@ package system.api.clinic.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
+import system.api.clinic.api.reponses.ScheduleHistoryResponse;
 import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
+import system.api.clinic.api.service.HistoryService;
 import system.api.clinic.api.service.UserService;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final HistoryService historyService;
 
     @PostMapping("/register-user")
     public ResponseEntity<NewUserResponse> register(@RequestBody NewUserRequest request) throws BadRequestException {
@@ -35,5 +43,11 @@ public class UserController {
     public ResponseEntity<NewAdminResponse> registerAdmin(@RequestBody NewAdminRequest request) throws BadRequestException {
         return new ResponseEntity<>(userService.createNewAdmin(request), HttpStatus.CREATED);
     }
+
+    @GetMapping("/user/history")
+    public ResponseEntity<Page<ScheduleHistoryResponse>> userHistory(Principal principal, Pageable pageable) {
+        return new ResponseEntity<>(historyService.list(principal, pageable), HttpStatus.OK);
+    }
+
 
 }
