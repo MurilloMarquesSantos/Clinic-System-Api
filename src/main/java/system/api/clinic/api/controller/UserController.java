@@ -6,10 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
@@ -47,6 +44,12 @@ public class UserController {
     @GetMapping("/user/history")
     public ResponseEntity<Page<ScheduleHistoryResponse>> userHistory(Principal principal, Pageable pageable) {
         return new ResponseEntity<>(historyService.list(principal, pageable), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/user/history/{id}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable long id, Principal principal) throws BadRequestException {
+        historyService.deleteSchedule(id, principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

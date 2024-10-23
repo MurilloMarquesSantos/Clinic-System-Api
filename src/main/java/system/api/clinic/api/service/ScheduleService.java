@@ -24,14 +24,14 @@ public class ScheduleService {
         Optional<Schedule> schedule = scheduleRepository.findByIdAndDoctorName(id, name);
 
         if (schedule.isPresent()) {
-            replaceScheduleStatus(id);
-            historyService.addHistory(name, principal, schedule.get());
+            replaceScheduleStatusUnavailable(id);
+            historyService.addHistory(name, principal, schedule.get(), id);
             return "Schedule done!";
         }
         throw new BadRequestException("This schedule is not in this Doctor's schedule");
     }
 
-    private void replaceScheduleStatus(long id) throws BadRequestException {
+    public void replaceScheduleStatusUnavailable(long id) throws BadRequestException {
         Optional<Schedule> savedSchedule = scheduleRepository.findById(id);
         if (savedSchedule.isPresent()) {
             Schedule schedule = savedSchedule.get();
@@ -41,4 +41,5 @@ public class ScheduleService {
             throw new BadRequestException("Schedule not found with id: " + id);
         }
     }
+
 }

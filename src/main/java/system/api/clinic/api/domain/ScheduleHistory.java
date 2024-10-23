@@ -27,6 +27,8 @@ public class ScheduleHistory {
 
     private String doctorName;
 
+    private long scheduleId;
+
     private LocalDateTime scheduleDate;
 
 }
