@@ -9,5 +9,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     List<Doctor> findByName(String name);
 
+    List<Doctor> findBySpecialty(String specialty);
+
     boolean existsByNameAndSpecialtyAndEmail(String name, String specialty, String email);
 }

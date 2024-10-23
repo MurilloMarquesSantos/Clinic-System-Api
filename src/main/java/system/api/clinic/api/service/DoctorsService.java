@@ -56,13 +56,25 @@ public class DoctorsService {
             allSchedules.addAll(list);
         }
 
-
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allSchedules.size());
         List<ScheduleResponse> paginatedList = allSchedules.subList(start, end);
 
 
         return new PageImpl<>(paginatedList, pageable, allSchedules.size());
+    }
+
+    public Page<FindDoctorsResponse> listBySpecialty(String specialty, Pageable pageable) {
+        List<Doctor> doctors = doctorRepository.findBySpecialty(specialty);
+        List<FindDoctorsResponse> docs = new ArrayList<>();
+        for (Doctor doc : doctors) {
+            FindDoctorsResponse build = FindDoctorsResponse.builder()
+                    .name(doc.getName())
+                    .specialty(doc.getSpecialty())
+                    .build();
+            docs.add(build);
+        }
+        return new PageImpl<>(docs, pageable, doctors.size());
     }
 
     public List<Doctor> findDoctorsOrThrowBadRequestException(String name) throws BadRequestException {
