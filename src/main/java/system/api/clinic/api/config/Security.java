@@ -44,6 +44,10 @@ public class Security {
             "/doctors/**"
     };
 
+    private final String[] ALLOWED_ENDPOINTS = {
+
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
@@ -56,6 +60,7 @@ public class Security {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
+
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter gAuthConv = new JwtGrantedAuthoritiesConverter();

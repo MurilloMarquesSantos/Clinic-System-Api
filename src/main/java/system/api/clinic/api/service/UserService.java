@@ -1,6 +1,7 @@
 package system.api.clinic.api.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,9 @@ import system.api.clinic.api.config.InitialConfig;
 import system.api.clinic.api.domain.Doctor;
 import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.User;
+import system.api.clinic.api.mapper.DoctorMapper;
+import system.api.clinic.api.mapper.ResponseMapper;
+import system.api.clinic.api.mapper.UserMapper;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
@@ -26,6 +30,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -34,37 +39,15 @@ public class UserService implements UserDetailsService {
     private final DoctorRepository doctorRepository;
 
     @Transactional(rollbackFor = Exception.class)
-    public NewUserResponse createNewUser(NewUserRequest request) throws BadRequestException {
-        User user = User.builder()
-                .name(request.getName())
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Collections.singleton(rolesService.getRoleByName("USER")))
-                .build();
-        userRepository.save(user);
-
-        return NewUserResponse.builder()
-                .username(request.getUsername()).email(request.getEmail()).password(request.getPassword()).build();
-
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public NewDoctorResponse createNewDoctor(NewDoctorRequest request) throws BadRequestException {
-        User user = User.builder()
-                .name(request.getName())
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Collections.singleton(rolesService.getRoleByName("DOCTOR")))
-                .build();
+        User user = UserMapper.INSTANCE.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Collections.singleton(rolesService.getRoleByName("DOCTOR")));
+
         userRepository.save(user);
 
-        Doctor doctor = Doctor.builder()
-                .name(request.getName())
-                .specialty(request.getSpecialty())
-                .email(request.getEmail())
-                .build();
+
+        Doctor doctor = DoctorMapper.INSTANCE.toDoctor(request);
 
         List<Schedule> schedule = InitialConfig.createSchedule();
         schedule.forEach(s -> s.setDoctor(doctor));
@@ -72,28 +55,30 @@ public class UserService implements UserDetailsService {
         doctor.setSchedule(schedule);
         doctorRepository.save(doctor);
 
-        return NewDoctorResponse.builder()
-                .name(doctor.getName())
-                .specialty(doctor.getSpecialty())
-                .email(doctor.getEmail())
-                .password(request.getPassword())
-                .build();
+        return ResponseMapper.INSTANCE.toDocResponse(request);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public NewUserResponse createNewUser(NewUserRequest request) throws BadRequestException {
+        User user = UserMapper.INSTANCE.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Collections.singleton(rolesService.getRoleByName("USER")));
+
+        userRepository.save(user);
+
+        return ResponseMapper.INSTANCE.toUserResponse(request);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public NewAdminResponse createNewAdmin(NewAdminRequest request) throws BadRequestException {
-        User user = User.builder()
-                .name(request.getName())
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Collections.singleton(rolesService.getRoleByName("ADMIN")))
-                .build();
+        User user = UserMapper.INSTANCE.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Collections.singleton(rolesService.getRoleByName("ADMIN")));
         userRepository.save(user);
 
-        return NewAdminResponse.builder()
-                .name(request.getName()).email(request.getEmail()).password(request.getPassword())
-                .role("ADMIN").build();
+        NewAdminResponse admResponse = ResponseMapper.INSTANCE.toAdmResponse(request);
+        admResponse.setRole("ADMIN");
+        return admResponse;
 
     }
 
