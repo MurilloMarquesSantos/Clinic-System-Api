@@ -3,6 +3,8 @@ package system.api.clinic.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +39,10 @@ public class UserService implements UserDetailsService {
     private final RolesService rolesService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DoctorRepository doctorRepository;
+
+    public Page<User> list(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public NewDoctorResponse createNewDoctor(NewDoctorRequest request) throws BadRequestException {

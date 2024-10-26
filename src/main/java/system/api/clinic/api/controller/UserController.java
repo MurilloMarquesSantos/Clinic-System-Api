@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import system.api.clinic.api.domain.User;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
@@ -25,6 +26,12 @@ public class UserController {
 
     private final UserService userService;
     private final HistoryService historyService;
+
+    @GetMapping("/adm/users")
+    public ResponseEntity<Page<User>> listAll(Pageable pageable) {
+        return ResponseEntity.ok(userService.list(pageable));
+    }
+
 
     @PostMapping("/register-user")
     public ResponseEntity<NewUserResponse> register(@RequestBody NewUserRequest request) throws BadRequestException {

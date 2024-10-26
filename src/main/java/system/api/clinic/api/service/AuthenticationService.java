@@ -21,7 +21,7 @@ public class AuthenticationService {
     private final TokenService tokenService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public LoginResponse login(LoginRequest request) throws InvalidLoginException {
+    public LoginResponse login(LoginRequest request) {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if (user.isEmpty() || !passwordEncoder.matches(request.getPassword(), user.get().getPassword())) {
             throw new InvalidLoginException();

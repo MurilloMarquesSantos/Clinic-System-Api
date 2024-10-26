@@ -1,7 +1,6 @@
 package system.api.clinic.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws BadRequestException {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 

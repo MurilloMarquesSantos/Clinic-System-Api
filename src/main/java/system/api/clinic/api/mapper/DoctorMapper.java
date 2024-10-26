@@ -5,6 +5,7 @@ import org.mapstruct.factory.Mappers;
 import system.api.clinic.api.domain.Doctor;
 import system.api.clinic.api.requests.NewDoctorRequest;
 
+@SuppressWarnings("java:S6548")
 @Mapper(componentModel = "spring")
 public abstract class DoctorMapper {
 

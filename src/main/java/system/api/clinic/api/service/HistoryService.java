@@ -10,6 +10,7 @@ import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.ScheduleHistory;
 import system.api.clinic.api.domain.User;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;
+import system.api.clinic.api.exception.InvalidOperationException;
 import system.api.clinic.api.reponses.ScheduleHistoryResponse;
 import system.api.clinic.api.repository.ScheduleHistoryRepository;
 import system.api.clinic.api.repository.ScheduleRepository;
@@ -79,20 +80,20 @@ public class HistoryService {
         ScheduleHistory schedule = findScheduleById(id);
 
         if (schedule.getUser().getId() != userId) {
-            throw new BadRequestException("You cant delete other users schedule");
+            throw new InvalidOperationException("This schedule Id does not exists in your schedule history");
         }
         historyRepository.delete(schedule);
-        replaceScheduleStatusAvailable(id);
+        replaceScheduleStatusAvailable(schedule.getScheduleId());
     }
 
-    public void replaceScheduleStatusAvailable(long id) throws BadRequestException {
+    public void replaceScheduleStatusAvailable(long id) {
         Optional<Schedule> savedSchedule = scheduleRepository.findById(id);
         if (savedSchedule.isPresent()) {
             Schedule schedule = savedSchedule.get();
             schedule.setAvailable(AvailabilityStatus.AVAILABLE);
             scheduleRepository.save(savedSchedule.get());
         } else {
-            throw new BadRequestException("Schedule not found with id: " + id);
+            throw new InvalidOperationException("Schedule not found with id: " + id);
         }
     }
 }

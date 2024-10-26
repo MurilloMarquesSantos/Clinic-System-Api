@@ -10,7 +10,6 @@ import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.User;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;
 import system.api.clinic.api.repository.DoctorRepository;
-import system.api.clinic.api.repository.RoleRepository;
 import system.api.clinic.api.repository.UserRepository;
 import system.api.clinic.api.service.RolesService;
 
@@ -20,6 +19,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@SuppressWarnings("java:S6437")
 public class InitialConfig implements CommandLineRunner {
 
     private final DoctorRepository doctorRepository;
@@ -119,6 +119,13 @@ public class InitialConfig implements CommandLineRunner {
                         .email("joao@gmail.com")
                         .password(passwordEncoder.encode("123"))
                         .roles(Collections.singleton(rolesService.getRoleByName("DOCTOR")))
+                        .build(),
+                User.builder()
+                        .name("Geraldo")
+                        .username("Geraldo")
+                        .email("geraldo@gmail.com")
+                        .password(passwordEncoder.encode("123"))
+                        .roles(Collections.singleton(rolesService.getRoleByName("USER")))
                         .build()
         );
 

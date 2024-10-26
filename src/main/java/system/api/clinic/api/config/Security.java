@@ -7,6 +7,8 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
+@SuppressWarnings("java:S116")
 @Configuration
 @EnableWebSecurity
 public class Security {
@@ -36,24 +39,36 @@ public class Security {
     private final String[] ADMIN_ENDPOINTS = {
             "/register-user",
             "/register-admin",
-            "/register-doctor"
+            "/register-doctor",
+            "/adm"
     };
 
     private final String[] USER_ENDPOINTS = {
             "/doctors",
-            "/doctors/**"
+            "/doctors/**",
+            "/user/**"
     };
 
     private final String[] ALLOWED_ENDPOINTS = {
+            "/login"
 
     };
+
+    @Bean
+    public static RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+                .role("ADMIN").implies("DOCTOR")
+                .role("DOCTOR").implies("USER")
+                .build();
+
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
                         .requestMatchers(USER_ENDPOINTS).hasRole("USER")
-                        .anyRequest().permitAll())
+                        .requestMatchers(ALLOWED_ENDPOINTS).permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))

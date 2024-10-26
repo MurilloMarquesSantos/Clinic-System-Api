@@ -9,6 +9,7 @@ import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 
+@SuppressWarnings("java:S6548")
 @Mapper(componentModel = "spring")
 public abstract class ResponseMapper {
 
@@ -19,4 +20,6 @@ public abstract class ResponseMapper {
     public abstract NewAdminResponse toAdmResponse(NewAdminRequest request);
 
     public abstract NewDoctorResponse toDocResponse(NewDoctorRequest request);
+
+
 }

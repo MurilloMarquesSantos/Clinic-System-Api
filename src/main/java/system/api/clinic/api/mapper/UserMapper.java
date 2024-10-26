@@ -7,6 +7,7 @@ import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 
+@SuppressWarnings("java:S6548")
 @Mapper(componentModel = "spring")
 public abstract class UserMapper {
 

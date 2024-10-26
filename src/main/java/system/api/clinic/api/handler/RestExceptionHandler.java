@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import system.api.clinic.api.exception.ExceptionDetails;
 import system.api.clinic.api.exception.InvalidLoginException;
+import system.api.clinic.api.exception.InvalidOperationException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +34,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .timestamp(LocalDateTime.now().format(dateTimeFormatter))
                 .status(HttpStatus.UNAUTHORIZED)
                 .details(ile.getMessage())
+                .path(request.getDescription(false))
+                .build(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ExceptionDetails> handleInvalidLoginException(InvalidOperationException ioe, WebRequest request) {
+        return new ResponseEntity<>(ExceptionDetails.builder()
+                .timestamp(LocalDateTime.now().format(dateTimeFormatter))
+                .status(HttpStatus.UNAUTHORIZED)
+                .details(ioe.getMessage())
                 .path(request.getDescription(false))
                 .build(), HttpStatus.UNAUTHORIZED);
     }
