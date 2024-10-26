@@ -88,6 +88,13 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public void deleteById(long id) throws BadRequestException {
+        if (!userRepository.existsById(id)) {
+            throw new BadRequestException("No user found with this ID");
+        }
+        userRepository.deleteById(id);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)

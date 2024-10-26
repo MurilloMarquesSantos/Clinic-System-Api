@@ -27,23 +27,22 @@ public class UserController {
     private final UserService userService;
     private final HistoryService historyService;
 
-    @GetMapping("/adm/users")
+    @GetMapping("/list/users")
     public ResponseEntity<Page<User>> listAll(Pageable pageable) {
         return ResponseEntity.ok(userService.list(pageable));
     }
 
-
-    @PostMapping("/register-user")
+    @PostMapping("/register/user")
     public ResponseEntity<NewUserResponse> register(@RequestBody NewUserRequest request) throws BadRequestException {
         return new ResponseEntity<>(userService.createNewUser(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/register-doctor")
+    @PostMapping("/register/doctor")
     public ResponseEntity<NewDoctorResponse> registerDoc(@RequestBody NewDoctorRequest request) throws BadRequestException {
         return new ResponseEntity<>(userService.createNewDoctor(request), HttpStatus.CREATED);
     }
 
-    @PostMapping("/register-admin")
+    @PostMapping("/register/admin")
     public ResponseEntity<NewAdminResponse> registerAdmin(@RequestBody NewAdminRequest request) throws BadRequestException {
         return new ResponseEntity<>(userService.createNewAdmin(request), HttpStatus.CREATED);
     }
@@ -56,6 +55,12 @@ public class UserController {
     @DeleteMapping("/user/history/{id}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable long id, Principal principal) throws BadRequestException {
         historyService.deleteSchedule(id, principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("list/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable long id) throws BadRequestException {
+        userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

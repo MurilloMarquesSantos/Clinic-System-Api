@@ -37,10 +37,8 @@ public class Security {
     private RSAPrivateKey privateKey;
 
     private final String[] ADMIN_ENDPOINTS = {
-            "/register-user",
-            "/register-admin",
-            "/register-doctor",
-            "/adm"
+            "/register/**",
+            "/list"
     };
 
     private final String[] USER_ENDPOINTS = {
