@@ -26,6 +26,7 @@ import system.api.clinic.api.repository.UserRepository;
 import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
+import system.api.clinic.api.strategy.NewAccountValidationStrategy;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +40,7 @@ public class UserService implements UserDetailsService {
     private final RolesService rolesService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final DoctorRepository doctorRepository;
+    private final List<NewAccountValidationStrategy> validationList;
 
     public Page<User> list(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -46,6 +48,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional(rollbackFor = Exception.class)
     public NewDoctorResponse createNewDoctor(NewDoctorRequest request) throws BadRequestException {
+        for (NewAccountValidationStrategy validation : validationList) {
+            validation.execute(request);
+        }
+
         User user = UserMapper.INSTANCE.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(rolesService.getRoleByName("DOCTOR")));
@@ -66,6 +72,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional(rollbackFor = Exception.class)
     public NewUserResponse createNewUser(NewUserRequest request) throws BadRequestException {
+        for (NewAccountValidationStrategy validation : validationList) {
+            validation.execute(request);
+        }
+
         User user = UserMapper.INSTANCE.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(rolesService.getRoleByName("USER")));
@@ -77,6 +87,10 @@ public class UserService implements UserDetailsService {
 
     @Transactional(rollbackFor = Exception.class)
     public NewAdminResponse createNewAdmin(NewAdminRequest request) throws BadRequestException {
+        for (NewAccountValidationStrategy validation : validationList) {
+            validation.execute(request);
+        }
+
         User user = UserMapper.INSTANCE.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(rolesService.getRoleByName("ADMIN")));

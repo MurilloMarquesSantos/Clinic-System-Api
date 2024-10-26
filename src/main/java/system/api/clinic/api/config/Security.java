@@ -38,7 +38,7 @@ public class Security {
 
     private final String[] ADMIN_ENDPOINTS = {
             "/register/**",
-            "/list"
+            "/list/**"
     };
 
     private final String[] USER_ENDPOINTS = {
