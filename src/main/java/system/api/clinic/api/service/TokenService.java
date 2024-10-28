@@ -1,7 +1,6 @@
 package system.api.clinic.api.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -15,10 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
+
 public class TokenService {
 
     private final JwtEncoder jwtEncoder;
+
     public LoginResponse generateToken(User user) {
 
         Instant now = Instant.now();
@@ -37,12 +37,10 @@ public class TokenService {
                 .claim("scope", scope)
                 .build();
 
-        log.info(claimsSet.getClaims());
-
-        log.info(claimsSet.getSubject());
-
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
 
         return LoginResponse.builder().accessToken(token).expiresIn(expiresIn).build();
+
     }
+
 }

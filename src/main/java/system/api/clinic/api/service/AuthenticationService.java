@@ -17,6 +17,7 @@ import java.util.Optional;
 @Log4j2
 public class AuthenticationService {
 
+
     private final UserRepository userRepository;
     private final TokenService tokenService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -28,6 +29,4 @@ public class AuthenticationService {
         }
         return tokenService.generateToken(user.get());
     }
-
-
 }
