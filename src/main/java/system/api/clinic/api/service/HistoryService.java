@@ -28,6 +28,8 @@ public class HistoryService {
     private final ScheduleHistoryRepository historyRepository;
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
+    private final EmailService emailService;
+
 
     public Page<ScheduleHistoryResponse> list(Principal principal, Pageable pageable) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
@@ -72,6 +74,7 @@ public class HistoryService {
                     .scheduleId(scheduleId)
                     .build();
             historyRepository.save(build);
+            emailService.sendEmail(user.getEmail());
         }
     }
 
