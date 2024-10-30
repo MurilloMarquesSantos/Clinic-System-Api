@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,13 +24,17 @@ import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
 import system.api.clinic.api.repository.DoctorRepository;
 import system.api.clinic.api.repository.UserRepository;
+import system.api.clinic.api.requests.ChangePasswordRequest;
 import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 import system.api.clinic.api.strategy.NewAccountValidationStrategy;
+import system.api.clinic.api.strategy.NewPasswordValidationStrategy;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +46,9 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final DoctorRepository doctorRepository;
     private final List<NewAccountValidationStrategy> validationList;
+    private final List<NewPasswordValidationStrategy> passwordValidationList;
+    private final EmailService emailService;
+    private final TokenService tokenService;
 
     public Page<User> list(Pageable pageable) {
         return userRepository.findAll(pageable);
@@ -113,5 +121,31 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public void requestPasswordReset(Principal principal) {
+        User user = findByIdOrThrowBadRequestException(principal);
+        String resetToken = tokenService.generatePasswordResetToken(user);
+        emailService.sendChangePasswordRequest(user.getEmail(), resetToken);
+    }
+
+    public void updatePassword(Principal principal, ChangePasswordRequest request, String token) throws BadRequestException {
+        if (tokenService.validatePasswordResetToken(token)) {
+            User user = findByIdOrThrowBadRequestException(principal);
+            for (NewPasswordValidationStrategy validation : passwordValidationList) {
+                validation.execute(request);
+            }
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+            emailService.sendChangePasswordConfirmation(user.getEmail());
+        }else{
+            throw new BadRequestException("INVALID TOKEN, EXPIRED");
+        }
+    }
+
+    public User findByIdOrThrowBadRequestException(Principal principal) {
+        long userId = Long.parseLong(principal.getName());
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
     }
 }

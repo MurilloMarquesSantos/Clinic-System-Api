@@ -61,9 +61,9 @@ public class HistoryService {
 
     public void addHistory(String doctorName, Principal principal, Schedule schedule, long scheduleId) {
 
-        String name = principal.getName();
+        String userId = principal.getName();
 
-        Optional<User> userOpt = userRepository.findById(Long.valueOf(name));
+        Optional<User> userOpt = userRepository.findById(Long.valueOf(userId));
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
@@ -74,19 +74,23 @@ public class HistoryService {
                     .scheduleId(scheduleId)
                     .build();
             historyRepository.save(build);
-            emailService.sendEmail(user.getEmail());
+            emailService.sendAppointmentConfirmation(user.getEmail(), doctorName, schedule.getDateTime());
         }
     }
 
     public void deleteSchedule(long id, Principal principal) throws BadRequestException {
         long userId = Long.parseLong(principal.getName());
         ScheduleHistory schedule = findScheduleById(id);
+        String doctorName = schedule.getDoctorName();
+        Optional<User> userOpt = userRepository.findById(userId);
 
         if (schedule.getUser().getId() != userId) {
             throw new InvalidOperationException("This schedule Id does not exists in your schedule history");
         }
         historyRepository.delete(schedule);
         replaceScheduleStatusAvailable(schedule.getScheduleId());
+        userOpt.ifPresent(user -> emailService.sendDeleteAppointmentConfirmation(
+                user.getEmail(), doctorName, schedule.getScheduleDate()));
     }
 
     public void replaceScheduleStatusAvailable(long id) {

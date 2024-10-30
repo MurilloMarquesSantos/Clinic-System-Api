@@ -12,6 +12,7 @@ import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
 import system.api.clinic.api.reponses.ScheduleHistoryResponse;
+import system.api.clinic.api.requests.ChangePasswordRequest;
 import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
@@ -61,6 +62,19 @@ public class UserController {
     @DeleteMapping("list/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable long id) throws BadRequestException {
         userService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/user/reset-password")
+    public ResponseEntity<Void> resetPasswordRequest(Principal principal) {
+        userService.requestPasswordReset(principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("user/password/reset")
+    public ResponseEntity<Void> resetPassword(@RequestParam String token, @RequestBody ChangePasswordRequest request,
+                                              Principal principal) throws BadRequestException {
+        userService.updatePassword(principal, request, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
