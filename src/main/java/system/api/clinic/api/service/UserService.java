@@ -34,7 +34,6 @@ import system.api.clinic.api.strategy.NewPasswordValidationStrategy;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -147,5 +146,9 @@ public class UserService implements UserDetailsService {
         long userId = Long.parseLong(principal.getName());
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
+    }
+
+    public void test(){
+
     }
 }
