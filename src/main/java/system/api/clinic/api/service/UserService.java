@@ -147,8 +147,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
     }
-
-    public void test(){
-
-    }
+    
 }

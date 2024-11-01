@@ -23,6 +23,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/home")
 public class UserController {
 
     private final UserService userService;
