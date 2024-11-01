@@ -19,11 +19,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:mm:ss");
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDetails> handleGlobalException(Exception bre, WebRequest request) {
+    public ResponseEntity<ExceptionDetails> handleGlobalException(Exception exc, WebRequest request) {
         return new ResponseEntity<>(ExceptionDetails.builder()
                 .timestamp(LocalDateTime.now().format(dateTimeFormatter))
                 .status(HttpStatus.BAD_REQUEST)
-                .details(bre.getMessage())
+                .details(exc.getMessage())
                 .path(request.getDescription(false))
                 .build(), HttpStatus.BAD_REQUEST);
     }

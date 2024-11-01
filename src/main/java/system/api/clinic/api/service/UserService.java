@@ -128,6 +128,7 @@ public class UserService implements UserDetailsService {
         emailService.sendChangePasswordRequest(user.getEmail(), resetToken);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void updatePassword(Principal principal, ChangePasswordRequest request, String token) throws BadRequestException {
         if (tokenService.validatePasswordResetToken(token)) {
             User user = findByIdOrThrowBadRequestException(principal);
@@ -137,7 +138,7 @@ public class UserService implements UserDetailsService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             userRepository.save(user);
             emailService.sendChangePasswordConfirmation(user.getEmail());
-        }else{
+        } else {
             throw new BadRequestException("INVALID TOKEN, EXPIRED");
         }
     }
@@ -147,5 +148,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new BadCredentialsException("User not found"));
     }
-    
+
 }

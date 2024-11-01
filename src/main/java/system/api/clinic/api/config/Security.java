@@ -42,13 +42,13 @@ public class Security {
     };
 
     private final String[] USER_ENDPOINTS = {
-            "/doctors",
-            "/doctors/**",
-            "/user/**"
+            "/home/doctors",
+            "/home/doctors/**",
+            "/home/user/**"
     };
 
     private final String[] ALLOWED_ENDPOINTS = {
-            "/login"
+            "/home/login"
 
     };
 
