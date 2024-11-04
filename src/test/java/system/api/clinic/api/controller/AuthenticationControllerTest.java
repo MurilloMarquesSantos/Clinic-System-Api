@@ -1,6 +1,5 @@
 package system.api.clinic.api.controller;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +14,8 @@ import system.api.clinic.api.requests.LoginRequest;
 import system.api.clinic.api.service.AuthenticationService;
 
 import static org.assertj.core.api.Assertions.*;
-import static util.LoginRequestCreator.*;
-import static util.LoginResponseCreator.*;
+import static util.login.LoginRequestCreator.*;
+import static util.login.LoginResponseCreator.*;
 
 @ExtendWith(SpringExtension.class)
 class AuthenticationControllerTest {
@@ -30,19 +29,19 @@ class AuthenticationControllerTest {
     @BeforeEach
     void setUp() {
         BDDMockito.when(authServiceMock.login(ArgumentMatchers.any(LoginRequest.class)))
-                .thenReturn(loginResponseCreator());
+                .thenReturn(createLoginResponse());
     }
 
     @Test
     @DisplayName("login returns LoginResponse when successful")
     void login_ReturnsLoginResponseWhenSuccessful() {
-        LoginResponse loginResponse = authController.login(createValidLoginRequest()).getBody();
+        LoginResponse loginResponse = authController.login(createLoginRequest()).getBody();
 
         assertThat(loginResponse).isNotNull();
 
         assertThat(loginResponse.getAccessToken()).isNotEmpty().isNotNull();
 
-        assertThat(loginResponse).isEqualTo(loginResponseCreator());
+        assertThat(loginResponse).isEqualTo(createLoginResponse());
     }
 
 }

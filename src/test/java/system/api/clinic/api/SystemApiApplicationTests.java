@@ -8,6 +8,6 @@ class SystemApiApplicationTests {
 
     @Test
     void contextLoads() {
-    }
 
+    }
 }
