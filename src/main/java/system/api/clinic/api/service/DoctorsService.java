@@ -36,7 +36,7 @@ public class DoctorsService {
     }
 
     public Page<ScheduleResponse> listSchedulesPage(String name, Pageable pageable) throws BadRequestException {
-        List<Doctor> doctorsList = findDoctorsOrThrowBadRequestException(name);
+        List<Doctor> doctorsList = findDoctors(name);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd - HH:mm");
 
@@ -47,7 +47,7 @@ public class DoctorsService {
                     .filter(s -> s.getAvailable().equals(AvailabilityStatus.AVAILABLE))
                     .map(schedules -> ScheduleResponse.builder()
                             .scheduleId(schedules.getId())
-                            .doctorName(name)
+                            .doctorName(doctor.getName())
                             .specialty(doctor.getSpecialty())
                             .dateTime(schedules.getDateTime().format(dateFormatter))
                             .build())
@@ -59,7 +59,6 @@ public class DoctorsService {
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), allSchedules.size());
         List<ScheduleResponse> paginatedList = allSchedules.subList(start, end);
-
 
         return new PageImpl<>(paginatedList, pageable, allSchedules.size());
     }
@@ -77,7 +76,7 @@ public class DoctorsService {
         return new PageImpl<>(docs, pageable, doctors.size());
     }
 
-    public List<Doctor> findDoctorsOrThrowBadRequestException(String name) throws BadRequestException {
+    public List<Doctor> findDoctors(String name) throws BadRequestException {
         List<Doctor> doctorList = doctorRepository.findByName(name);
         if (doctorList.isEmpty()) {
             throw new BadRequestException("No doctor found with this name");
