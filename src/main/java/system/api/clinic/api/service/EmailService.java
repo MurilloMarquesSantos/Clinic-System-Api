@@ -3,7 +3,6 @@ package system.api.clinic.api.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class EmailService {
 
     private final JavaMailSender mailSender;
@@ -79,7 +77,7 @@ public class EmailService {
             helper.setText(htmlContent, true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new EmailSendingException("ERROR TO SEND EMAIL");
+            throw new EmailSendingException(MESSAGE);
         }
     }
 
