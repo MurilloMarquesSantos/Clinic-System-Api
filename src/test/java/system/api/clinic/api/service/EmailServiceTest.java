@@ -23,7 +23,7 @@ class EmailServiceTest {
     private EmailService emailService;
 
     @Mock
-    private JavaMailSender mailSender;
+    private JavaMailSender mailSenderMock;
 
     @Mock
     private MimeMessage mimeMessage;
@@ -36,10 +36,10 @@ class EmailServiceTest {
     @BeforeEach
     void setUp() {
 
-        BDDMockito.lenient().when(mailSender.createMimeMessage())
+        BDDMockito.lenient().when(mailSenderMock.createMimeMessage())
                 .thenReturn(mimeMessage);
 
-        BDDMockito.lenient().doNothing().when(mailSender).send(mimeMessage);
+        BDDMockito.lenient().doNothing().when(mailSenderMock).send(mimeMessage);
     }
 
     @Test
