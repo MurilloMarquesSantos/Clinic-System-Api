@@ -1,10 +1,12 @@
-package util.user;
+package system.api.clinic.api.util.user;
 
 import system.api.clinic.api.domain.Roles;
 import system.api.clinic.api.domain.User;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
+import system.api.clinic.api.requests.NewAdminRequest;
+import system.api.clinic.api.requests.NewUserRequest;
 
 import java.util.Set;
 
@@ -43,6 +45,24 @@ public class UserCreator {
                 .name("Joao")
                 .specialty("Cardiologist")
                 .email("joao@gmail.com")
+                .password("123")
+                .build();
+    }
+
+    public static NewAdminRequest createAdminRequest() {
+        return NewAdminRequest.builder()
+                .name("Murillo")
+                .username("Murillo")
+                .email("murillo@gmail.com")
+                .password("123")
+                .build();
+    }
+
+    public static NewUserRequest createUserRequest() {
+        return NewUserRequest.builder()
+                .name("Murillo")
+                .username("Murillo")
+                .email("murillo@gmail.com")
                 .password("123")
                 .build();
     }

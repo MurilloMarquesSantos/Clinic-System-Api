@@ -1,4 +1,4 @@
-package util.schedule;
+package system.api.clinic.api.util.schedule;
 
 import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;

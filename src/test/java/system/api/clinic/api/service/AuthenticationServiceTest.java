@@ -18,9 +18,9 @@ import system.api.clinic.api.requests.LoginRequest;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static util.login.LoginRequestCreator.*;
-import static util.login.LoginResponseCreator.*;
-import static util.user.UserCreator.createValidUser;
+import static system.api.clinic.api.util.login.LoginRequestCreator.createLoginRequest;
+import static system.api.clinic.api.util.login.LoginResponseCreator.createLoginResponse;
+import static system.api.clinic.api.util.user.UserCreator.createValidUser;
 
 @ExtendWith(SpringExtension.class)
 class AuthenticationServiceTest {

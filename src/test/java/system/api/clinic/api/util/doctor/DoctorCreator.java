@@ -1,16 +1,15 @@
-package util.doctor;
+package system.api.clinic.api.util.doctor;
 
 import system.api.clinic.api.domain.Doctor;
 import system.api.clinic.api.reponses.FindDoctorsResponse;
+import system.api.clinic.api.requests.NewDoctorRequest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static util.schedule.ScheduleCreator.*;
+import static system.api.clinic.api.util.schedule.ScheduleCreator.createSchedule;
 
 public class DoctorCreator {
 
-    public static final LocalDateTime DATE_TIME = LocalDateTime.MAX;
 
     public static Doctor createValidDoctor() {
         return Doctor.builder()
@@ -26,6 +25,16 @@ public class DoctorCreator {
         return FindDoctorsResponse.builder()
                 .name("Joao")
                 .specialty("Cardiologist")
+                .build();
+    }
+
+    public static NewDoctorRequest createDoctorRequest(){
+        return NewDoctorRequest.builder()
+                .name("Joao")
+                .username("Joao")
+                .specialty("Cardiologist")
+                .email("joao@gmail.com")
+                .password("123")
                 .build();
     }
 }

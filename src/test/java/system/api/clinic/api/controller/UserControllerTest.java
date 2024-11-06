@@ -27,8 +27,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static util.schedule.ScheduleCreator.createScheduleHistoryResponse;
-import static util.user.UserCreator.*;
+import static system.api.clinic.api.util.schedule.ScheduleCreator.createScheduleHistoryResponse;
+import static system.api.clinic.api.util.user.UserCreator.*;
 
 @ExtendWith(SpringExtension.class)
 class UserControllerTest {

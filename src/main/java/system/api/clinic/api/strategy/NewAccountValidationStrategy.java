@@ -5,6 +5,7 @@ import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 
+
 public interface NewAccountValidationStrategy {
     void execute(NewDoctorRequest request) throws BadRequestException;
 

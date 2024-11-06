@@ -1,4 +1,4 @@
-package util.login;
+package system.api.clinic.api.util.login;
 
 import system.api.clinic.api.reponses.LoginResponse;
 

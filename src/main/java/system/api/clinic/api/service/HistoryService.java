@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import system.api.clinic.api.domain.Schedule;
 import system.api.clinic.api.domain.ScheduleHistory;
 import system.api.clinic.api.domain.User;
@@ -59,6 +60,7 @@ public class HistoryService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void addHistory(String doctorName, Principal principal, Schedule schedule, long scheduleId) {
 
         String userId = principal.getName();
@@ -78,6 +80,7 @@ public class HistoryService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteSchedule(long id, Principal principal) throws BadRequestException {
         long userId = Long.parseLong(principal.getName());
         ScheduleHistory schedule = findScheduleById(id);

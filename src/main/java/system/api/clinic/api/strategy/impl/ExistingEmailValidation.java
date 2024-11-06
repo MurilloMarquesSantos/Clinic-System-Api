@@ -9,6 +9,7 @@ import system.api.clinic.api.requests.NewDoctorRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 import system.api.clinic.api.strategy.NewAccountValidationStrategy;
 
+
 @Component
 @RequiredArgsConstructor
 public class ExistingEmailValidation implements NewAccountValidationStrategy {

@@ -21,5 +21,4 @@ public abstract class ResponseMapper {
 
     public abstract NewDoctorResponse toDocResponse(NewDoctorRequest request);
 
-
 }

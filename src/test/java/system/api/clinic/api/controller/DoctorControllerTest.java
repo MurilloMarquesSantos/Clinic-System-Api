@@ -20,9 +20,9 @@ import system.api.clinic.api.service.ScheduleService;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static util.doctor.DoctorCreator.createDoctorResponse;
-import static util.schedule.ScheduleCreator.createScheduleHistoryResponse;
-import static util.schedule.ScheduleCreator.createScheduleResponse;
+import static system.api.clinic.api.util.doctor.DoctorCreator.createDoctorResponse;
+import static system.api.clinic.api.util.schedule.ScheduleCreator.createScheduleHistoryResponse;
+import static system.api.clinic.api.util.schedule.ScheduleCreator.createScheduleResponse;
 
 @ExtendWith(SpringExtension.class)
 class DoctorControllerTest {
