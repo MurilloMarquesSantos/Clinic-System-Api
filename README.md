@@ -1,5 +1,5 @@
 <h1>Clinic System Api</h1>
-<p>TThis application was built to streamline appointment scheduling for clinics, making it simple for users to book consultations, check available doctors and their specialties, and view open time slots. Users can easily make, view, and cancel bookings, while system administrators have access to monitoring tools for system health and performance metrics</p>
+<p>This application was built to streamline appointment scheduling for clinics, making it simple for users to book consultations, check available doctors and their specialties, and view open time slots. Users can easily make, view, and cancel bookings, while system administrators have access to monitoring tools for system health and performance metrics</p>
 
 
 
@@ -8,7 +8,6 @@
 <h2>To-do</h2>
 <ul>
   <li>Unit tests</li>
-  <li>Integration tests</li>
   <li>Prometheus</li>
   <li>Grafana</li>
   <li>Swagger</li>
