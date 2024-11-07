@@ -50,7 +50,7 @@ public class HistoryService {
         return new PageImpl<>(history, pageable, userHistory.getTotalElements());
     }
 
-    private ScheduleHistory findScheduleById(long id) throws BadRequestException {
+    public ScheduleHistory findScheduleById(long id) throws BadRequestException {
         Optional<ScheduleHistory> schedule = historyRepository.findById(id);
         if (schedule.isPresent()) {
             return schedule.get();
@@ -61,7 +61,7 @@ public class HistoryService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void addHistory(String doctorName, Principal principal, Schedule schedule, long scheduleId) {
+    public void addHistory(String doctorName, Principal principal, Schedule schedule, long scheduleId) throws BadRequestException {
 
         String userId = principal.getName();
 
@@ -77,6 +77,8 @@ public class HistoryService {
                     .build();
             historyRepository.save(build);
             emailService.sendAppointmentConfirmation(user.getEmail(), doctorName, schedule.getDateTime());
+        }else {
+            throw new BadRequestException("INVALID LOGGED USER");
         }
     }
 

@@ -1,11 +1,14 @@
 package system.api.clinic.api.util.schedule;
 
 import system.api.clinic.api.domain.Schedule;
+import system.api.clinic.api.domain.ScheduleHistory;
 import system.api.clinic.api.domain.enums.AvailabilityStatus;
 import system.api.clinic.api.reponses.ScheduleHistoryResponse;
 import system.api.clinic.api.reponses.ScheduleResponse;
 
 import java.time.LocalDateTime;
+
+import static system.api.clinic.api.util.user.UserCreator.createValidUser;
 
 public class ScheduleCreator {
 
@@ -33,4 +36,15 @@ public class ScheduleCreator {
                 .scheduleDate("11/22 - 10:00")
                 .build();
     }
+
+    public static ScheduleHistory createScheduleHistory() {
+        return ScheduleHistory.builder()
+                .id(1L)
+                .user(createValidUser())
+                .doctorName("Joao")
+                .scheduleId(1L)
+                .scheduleDate(LocalDateTime.of(2024, 11, 22, 10, 0))
+                .build();
+    }
+
 }
