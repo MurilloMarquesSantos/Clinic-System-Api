@@ -121,7 +121,7 @@ class HistoryServiceTest {
 
         ScheduleHistory schedule = historyService.findScheduleById(1);
 
-        assertThat(schedule).isEqualTo(createScheduleHistory());
+        assertThat(schedule).isNotNull().isEqualTo(createScheduleHistory());
     }
 
     @Test

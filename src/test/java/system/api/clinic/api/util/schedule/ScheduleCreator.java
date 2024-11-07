@@ -20,6 +20,14 @@ public class ScheduleCreator {
                 .build();
     }
 
+    public static Schedule createUnavailableSchedule() {
+        return Schedule.builder()
+                .id(1L)
+                .dateTime(LocalDateTime.of(2024, 11, 22, 10, 0))
+                .available(AvailabilityStatus.UNAVAILABLE)
+                .build();
+    }
+
     public static ScheduleResponse createScheduleResponse() {
         return ScheduleResponse.builder()
                 .scheduleId(1L)
