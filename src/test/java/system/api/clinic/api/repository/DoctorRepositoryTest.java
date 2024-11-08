@@ -3,6 +3,7 @@ package system.api.clinic.api.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import system.api.clinic.api.domain.Doctor;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import static system.api.clinic.api.util.doctor.DoctorCreator.createValidDoctor;
 import static system.api.clinic.api.util.doctor.DoctorCreator.createValidDoctorToBeSaved;
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DoctorRepositoryTest {
 
     @Autowired
@@ -77,7 +79,6 @@ class DoctorRepositoryTest {
         assertThat(savedDoc.getId()).isEqualTo(createValidDoctor().getId());
 
         assertThat(savedDoc.getSpecialty()).isNotNull().isEqualTo(createValidDoctor().getSpecialty());
-
 
     }
 }
