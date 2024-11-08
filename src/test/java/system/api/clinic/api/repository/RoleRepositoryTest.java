@@ -22,7 +22,6 @@ class RoleRepositoryTest {
 
         Optional<Roles> roleOpt = roleRepository.findByName(role.getName());
 
-
         assertThat(roleOpt).isPresent();
 
         assertThat(roleOpt.get()).isNotNull().isEqualTo(role);

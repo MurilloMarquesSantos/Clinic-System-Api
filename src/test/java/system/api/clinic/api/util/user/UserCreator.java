@@ -5,6 +5,7 @@ import system.api.clinic.api.domain.User;
 import system.api.clinic.api.reponses.NewAdminResponse;
 import system.api.clinic.api.reponses.NewDoctorResponse;
 import system.api.clinic.api.reponses.NewUserResponse;
+import system.api.clinic.api.repository.RoleRepository;
 import system.api.clinic.api.requests.NewAdminRequest;
 import system.api.clinic.api.requests.NewUserRequest;
 
@@ -20,6 +21,17 @@ public class UserCreator {
                 .email("murillo@gmail.com")
                 .password("123")
                 .roles(Set.of(new Roles(1L, "ADMIN")))
+                .build();
+    }
+
+    public static User createValidUserToBeSaved(RoleRepository roleRepository) {
+        Roles role = roleRepository.save(Roles.builder().name("ADMIN").build());
+        return User.builder()
+                .name("Murillo")
+                .username("Murillo")
+                .email("murillo@gmail.com")
+                .password("123")
+                .roles(Set.of(role))
                 .build();
     }
 
