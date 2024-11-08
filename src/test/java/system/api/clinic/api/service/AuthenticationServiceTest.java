@@ -17,9 +17,10 @@ import system.api.clinic.api.requests.LoginRequest;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static system.api.clinic.api.util.login.LoginRequestCreator.createLoginRequest;
-import static system.api.clinic.api.util.login.LoginResponseCreator.createLoginResponse;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static system.api.clinic.api.util.login.LoginCreator.createLoginRequest;
+import static system.api.clinic.api.util.login.LoginCreator.createLoginResponse;
 import static system.api.clinic.api.util.user.UserCreator.createValidUser;
 
 @ExtendWith(SpringExtension.class)
