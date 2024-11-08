@@ -12,9 +12,18 @@ import static system.api.clinic.api.util.user.UserCreator.createValidUser;
 
 public class ScheduleCreator {
 
+
+
     public static Schedule createSchedule() {
         return Schedule.builder()
                 .id(1L)
+                .dateTime(LocalDateTime.of(2024, 11, 22, 10, 0))
+                .available(AvailabilityStatus.AVAILABLE)
+                .build();
+    }
+
+    public static Schedule createScheduleToBeSaved() {
+        return Schedule.builder()
                 .dateTime(LocalDateTime.of(2024, 11, 22, 10, 0))
                 .available(AvailabilityStatus.AVAILABLE)
                 .build();
