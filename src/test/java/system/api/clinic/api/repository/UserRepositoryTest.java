@@ -24,7 +24,7 @@ class UserRepositoryTest {
     private RoleRepository roleRepository;
 
     @Test
-    void existsByEmail() {
+    void existsByEmail_ReturnsTrue_WhenSuccessful() {
 
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
@@ -34,7 +34,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void save() {
+    void save_PersistsUser_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
         assertThat(savedUser).isNotNull().isEqualTo(createValidUser());
@@ -42,7 +42,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByEmail() {
+    void findByEmail_ReturnsOptUser_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
         Optional<User> user = userRepository.findByEmail(savedUser.getEmail());
@@ -52,7 +52,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findById() {
+    void findById_ReturnsOptOfUser_WhenSuccessful() {
 
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
@@ -62,7 +62,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findAll() {
+    void findAll_ReturnsListOfUser_WhenSuccessful() {
 
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
@@ -73,7 +73,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void delete() {
+    void delete_RemovesUser_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
         userRepository.delete(savedUser);
@@ -85,7 +85,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void existsById() {
+    void existsById_ReturnsTrue_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
         boolean exists = userRepository.existsById(savedUser.getId());
@@ -95,7 +95,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void deleteById() {
+    void deleteById_RemovesUserById_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
         userRepository.deleteById(savedUser.getId());
@@ -107,7 +107,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsername() {
+    void findByUsername_ReturnsOptOfUser_WhenSuccessful() {
 
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
@@ -118,7 +118,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void existsByUsername() {
+    void existsByUsername_ReturnsTrue_WhenSuccessful() {
 
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 
