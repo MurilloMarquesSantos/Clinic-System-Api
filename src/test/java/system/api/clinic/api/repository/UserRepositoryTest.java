@@ -34,6 +34,16 @@ class UserRepositoryTest {
     }
 
     @Test
+    void existsByEmail_ReturnsFalse_WhenEmailNotExists() {
+
+        userRepository.save(createValidUserToBeSaved(roleRepository));
+
+        boolean exists = userRepository.existsByEmail("");
+
+        assertThat(exists).isFalse();
+    }
+
+    @Test
     void save_PersistsUser_WhenSuccessful() {
         User savedUser = userRepository.save(createValidUserToBeSaved(roleRepository));
 

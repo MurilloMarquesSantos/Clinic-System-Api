@@ -70,6 +70,18 @@ class DoctorRepositoryTest {
     }
 
     @Test
+    void existsByNameAndSpecialtyAndEmail_ReturnsFalse_WhenNotExists() {
+
+        doctorRepository.save(createValidDoctorToBeSaved(scheduleRepository));
+
+        boolean exists = doctorRepository.existsByNameAndSpecialtyAndEmail(
+                "", "", "");
+
+        assertThat(exists).isFalse();
+
+    }
+
+    @Test
     void save_PersistsDoctor_WhenSuccessful() {
 
         Doctor savedDoc = doctorRepository.save(createValidDoctorToBeSaved(scheduleRepository));

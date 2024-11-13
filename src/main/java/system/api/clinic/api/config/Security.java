@@ -48,7 +48,8 @@ public class Security {
     };
 
     private final String[] ALLOWED_ENDPOINTS = {
-            "/home/login"
+            "/home/login",
+            "/actuator/**"
 
     };
 

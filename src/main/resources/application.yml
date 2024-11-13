@@ -5,6 +5,8 @@ jwt:
     key: classpath:app.key
 
 spring:
+  application:
+    name: ClinicApi
   datasource:
     url: jdbc:mysql://127.0.0.1:3307/clinic?createDatabaseIfNotExist=true
     username: root
@@ -31,6 +33,21 @@ spring:
           timeout: 5000
           writetimeout: 5000
 
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, prometheus
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+info:
+  app: Clinic system application
+  github:
 
 logging:
   level:
