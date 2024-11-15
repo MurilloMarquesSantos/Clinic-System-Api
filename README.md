@@ -7,9 +7,7 @@
 <p>I am still finishing this project</p>
 <h2>To-do</h2>
 <ul>
-  <li>Unit tests</li>
-  <li>Prometheus</li>
-  <li>Grafana</li>
-  <li>Swagger</li>
+  <li>Edge cases on unit tests</li>
+  <li>Enhance Swagger description</li>
   <li>Enhance this read me with more details</li>
 </ul>

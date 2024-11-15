@@ -47,7 +47,7 @@ management:
       application: ${spring.application.name}
 info:
   app: Clinic system application
-  github:
+  github: https://github.com/MurilloMarquesSantos/Clinic-System-Api
 
 logging:
   level:
