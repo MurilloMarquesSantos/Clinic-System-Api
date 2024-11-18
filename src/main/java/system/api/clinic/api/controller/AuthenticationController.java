@@ -36,7 +36,7 @@ public class AuthenticationController {
                     description = "User logged successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            examples = @ExampleObject(value = "{ \"token\": \"eyJhbGciOiJIUzI1...\" }")
+                            examples = @ExampleObject(value = "{ \"accessToken\": \"eyJhbGciOiJIUzI1...\" }")
                     )
             ),
             @ApiResponse(responseCode = "401",
