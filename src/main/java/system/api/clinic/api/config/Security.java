@@ -49,8 +49,11 @@ public class Security {
 
     private final String[] ALLOWED_ENDPOINTS = {
             "/home/login",
-            "/actuator/**"
-
+            "/actuator/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html**",
+            "/swagger-resources/**"
     };
 
     @Bean
@@ -65,13 +68,14 @@ public class Security {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers(ALLOWED_ENDPOINTS).permitAll()
                         .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
-                        .requestMatchers(USER_ENDPOINTS).hasRole("USER")
-                        .requestMatchers(ALLOWED_ENDPOINTS).permitAll())
+                        .requestMatchers(USER_ENDPOINTS).hasRole("USER"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
@@ -87,7 +91,7 @@ public class Security {
     }
 
     @Bean
-    public JwtEncoder jtwEncoder() {
+    public JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(this.publicKey).privateKey(privateKey).build();
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
