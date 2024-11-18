@@ -35,7 +35,8 @@ public class DoctorController {
     @GetMapping("/doctors")
     @Operation(
             summary = "List doctors and his specialties",
-            description = "Returns page of doctor response"
+            description = "This endpoint must redirect to \"/doctors/{name}\", when clicking in the doctor name," +
+                    "so the user can see this doctors available schedules"
     )
     @ApiResponse(
             responseCode = "200",

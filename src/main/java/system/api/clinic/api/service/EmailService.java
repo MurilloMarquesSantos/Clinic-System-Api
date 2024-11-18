@@ -94,8 +94,9 @@ public class EmailService {
                             + "<h2>Password Reset</h2>"
                             + "<p>Hello,</p>"
                             + "<p>Your link to change your password:</p>"
-                            +" <p>http://localhost:8080/home/user/password/reset?token=%s</p>"
+                            + "<p>http://localhost:8080/home/user/password/reset?token=%s</p>"
                             + "<br>"
+                            + "<p>This link will expire in 5 minutes!</p>"
                             + "<p>Best regards,</p>"
                             + "<p>The Clinic Team</p>"
                             + "</div>",
