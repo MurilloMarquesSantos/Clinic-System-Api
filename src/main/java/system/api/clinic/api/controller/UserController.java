@@ -2,6 +2,7 @@ package system.api.clinic.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class UserController {
     private final HistoryService historyService;
 
     @GetMapping("/list/users")
-    public ResponseEntity<Page<User>> listAll(Pageable pageable) {
+    public ResponseEntity<Page<User>> listAll(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(userService.list(pageable));
     }
 
