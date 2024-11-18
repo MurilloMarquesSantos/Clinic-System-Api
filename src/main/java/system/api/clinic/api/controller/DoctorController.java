@@ -1,8 +1,11 @@
 package system.api.clinic.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springdoc.core.annotations.ParameterObject;
@@ -22,6 +25,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/home")
+@Tag(name = "Doctors endpoints", description = "Every endpoint that need any doctor info")
 public class DoctorController {
 
     private final DoctorsService doctorsService;
@@ -29,22 +33,49 @@ public class DoctorController {
 
 
     @GetMapping("/doctors")
-    @Operation(summary = "List all doctors and his specialties",
-            description = "Returns doctor response")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "When successful"),
-            @ApiResponse(responseCode = "400", description = "When could not find doctors")
-    })
+    @Operation(
+            summary = "List doctors and his specialties",
+            description = "Returns page of doctor response"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "When successful"
+    )
     public ResponseEntity<Page<FindDoctorsResponse>> listAll(@ParameterObject Pageable pageable) {
         return new ResponseEntity<>(doctorsService.listAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/doctors/{name}")
+    @Operation(
+            summary = "List doctor and his schedules",
+            description = "Returns page of schedule response"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "When successful"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "When doctor is not found",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(value = "No doctor found with this name")
+                    ))
+    })
     public ResponseEntity<Page<ScheduleResponse>> schedule(
             @PathVariable String name, @ParameterObject Pageable pageable) throws BadRequestException {
         return new ResponseEntity<>(doctorsService.listSchedulesPage(name, pageable), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "List doctors by specialty",
+            description = "Returns page of doctor response"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "When successful"
+    )
     @GetMapping(value = "/doctors", params = "specialty")
     public ResponseEntity<Page<FindDoctorsResponse>> listBySpecialty(
             @RequestParam(name = "specialty") String specialty, @ParameterObject Pageable pageable) {
@@ -52,6 +83,24 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors/{name}/{id}")
+    @Operation(
+            summary = "Do a new appointment",
+            description = "Returns and send email with appointment info"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "When successful"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "When schedule Id is invalid",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(value = "This schedule is not in this Doctor's schedule")
+                    )
+            )
+    })
     public ResponseEntity<ScheduleHistoryResponse> doSchedule(@PathVariable String name, @PathVariable long id,
                                                               Principal principal) throws BadRequestException {
         return new ResponseEntity<>(scheduleService.doSchedule(name, id, principal), HttpStatus.OK);
