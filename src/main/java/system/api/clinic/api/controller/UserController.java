@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springdoc.core.annotations.ParameterObject;
@@ -30,6 +31,7 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/home")
+@Tag(name = "User endpoints", description = "Every endpoint for users")
 public class UserController {
 
     private final UserService userService;
@@ -66,14 +68,8 @@ public class UserController {
                     description = "When user info does not match requirements",
                     content = @Content(
                             mediaType = "application/json",
-                            examples = @ExampleObject(value = """
-                                    There is already an user with this email!
-                                    USERNAME UNAVAILABLE
-                                    The password must have at least 8 and maximum of 12 characters
-                                    The password must have at least, 1 lower case char, 1 upper case char,
-                                    1 number, 1 special char
-                                    The username must have more than 2 characters
-                                    """)
+                            examples = @ExampleObject(value =
+                                    "The password must have at least 8 and maximum of 12 characters.")
                     )
             )
     })
@@ -97,14 +93,8 @@ public class UserController {
                     description = "When doctor info does not match requirements",
                     content = @Content(
                             mediaType = "application/json",
-                            examples = @ExampleObject(value = """
-                                    There is already an user with this email!
-                                    USERNAME UNAVAILABLE
-                                    The password must have at least 8 and maximum of 12 characters
-                                    The password must have at least, 1 lower case char, 1 upper case char,
-                                    1 number, 1 special char
-                                    The username must have more than 2 characters
-                                    """)
+                            examples = @ExampleObject(value =
+                                    "The password must have at least 8 and maximum of 12 characters.")
                     )
             )
     })
@@ -128,14 +118,8 @@ public class UserController {
                     description = "When admin info does not match requirements",
                     content = @Content(
                             mediaType = "application/json",
-                            examples = @ExampleObject(value = """
-                                    There is already an user with this email!
-                                    USERNAME UNAVAILABLE
-                                    The password must have at least 8 and maximum of 12 characters
-                                    The password must have at least, 1 lower case char, 1 upper case char,
-                                    1 number, 1 special char
-                                    The username must have more than 2 characters
-                                    """)
+                            examples = @ExampleObject(value =
+                                    "The password must have at least 8 and maximum of 12 characters.")
                     )
             )
     })
@@ -240,14 +224,8 @@ public class UserController {
                     description = "When password does not match requirements",
                     content = @Content(
                             mediaType = "application/json",
-                            examples = @ExampleObject(value = """
-                                The password must have at least 8 and maximum of 12 characters.
-                                The password must have at least:
-                                - 1 lower case char
-                                - 1 upper case char
-                                - 1 number
-                                - 1 special char
-                                """)
+                            examples = @ExampleObject(value =
+                                    "The password must have at least 8 and maximum of 12 characters.")
                     )
             )
     })
@@ -256,6 +234,5 @@ public class UserController {
         userService.updatePassword(principal, request, token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }
