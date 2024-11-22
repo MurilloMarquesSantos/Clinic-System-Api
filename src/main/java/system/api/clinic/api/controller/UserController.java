@@ -54,7 +54,7 @@ public class UserController {
     @Operation(
             summary = "Register a new user",
             description = "Return the user created and his info" +
-                    "\n ADMIN ONLY"
+                    " | ADMIN ONLY"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -85,7 +85,7 @@ public class UserController {
     @Operation(
             summary = "Register a new doctor",
             description = "Return the doctor created and his info" +
-                    "\n ADMIN ONLY"
+                    "| ADMIN ONLY"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -187,7 +187,7 @@ public class UserController {
     @Operation(
             summary = "Delete an user",
             description = "Delete an user" +
-                    "\n ADMIN ONLY"
+                    " | ADMIN ONLY"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -228,8 +228,7 @@ public class UserController {
     @Operation(
             summary = "Change user password",
             description = "To use this endpoint, you must do a request that will send the link to your email," +
-                    "the link will expire in 5 minutes"
-
+                    " the link will expire in 5 minutes"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -242,10 +241,13 @@ public class UserController {
                     content = @Content(
                             mediaType = "application/json",
                             examples = @ExampleObject(value = """
-                                    The password must have at least 8 and maximum of 12 characters
-                                    The password must have at least, 1 lower case char, 1 upper case char,
-                                    1 number, 1 special char
-                                    """)
+                                The password must have at least 8 and maximum of 12 characters.
+                                The password must have at least:
+                                - 1 lower case char
+                                - 1 upper case char
+                                - 1 number
+                                - 1 special char
+                                """)
                     )
             )
     })
