@@ -69,6 +69,8 @@ public class DoctorController {
         return new ResponseEntity<>(doctorsService.listSchedulesPage(name, pageable), HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/doctors/{specialty}")
     @Operation(
             summary = "List doctors by specialty",
             description = "Returns page of doctor response"
@@ -77,9 +79,8 @@ public class DoctorController {
             responseCode = "200",
             description = "When successful"
     )
-    @GetMapping(value = "/doctors", params = "specialty")
     public ResponseEntity<Page<FindDoctorsResponse>> listBySpecialty(
-            @RequestParam(name = "specialty") String specialty, @ParameterObject Pageable pageable) {
+            @PathVariable String specialty, @ParameterObject Pageable pageable) {
         return new ResponseEntity<>(doctorsService.listBySpecialty(specialty, pageable), HttpStatus.OK);
     }
 

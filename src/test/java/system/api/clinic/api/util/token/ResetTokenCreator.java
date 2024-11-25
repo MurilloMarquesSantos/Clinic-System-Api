@@ -11,7 +11,7 @@ public class ResetTokenCreator {
                 .id(1L)
                 .token("TEST_TOKEN")
                 .userId(1L)
-                .expirationDate(LocalDateTime.of(2024, 11, 22, 10, 0))
+                .expirationDate(LocalDateTime.of(2025, 11, 22, 10, 0))
                 .build();
     }
 
@@ -19,7 +19,7 @@ public class ResetTokenCreator {
         return PasswordResetToken.builder()
                 .token("TEST_TOKEN")
                 .userId(1L)
-                .expirationDate(LocalDateTime.of(2024, 11, 22, 10, 0))
+                .expirationDate(LocalDateTime.of(2025, 11, 22, 10, 0))
                 .build();
     }
 }
